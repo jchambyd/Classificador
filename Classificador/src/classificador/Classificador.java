@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package classificador;
+import Interface.Interface;
 
 /**
  *
@@ -16,6 +17,8 @@ public class Classificador {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Interface i = new Interface();
+        i.setVisible(true);
     }
     
 }
