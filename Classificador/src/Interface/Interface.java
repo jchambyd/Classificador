@@ -10,13 +10,15 @@ import java.io.FilenameFilter;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
+import classificador.*;
 /**
  *
  * @author jorge
  */
 public class Interface extends javax.swing.JFrame {
 
+    private String paDocuments [][];
+    private Classificador poClassificador;
     /**
      * Creates new form Interface
      */
@@ -521,6 +523,33 @@ public class Interface extends javax.swing.JFrame {
         }.start();
     }
     
+    private void mxLearnNaiveBayesText(int tnBeginTeste, int tnEndTeste)
+    {
+        int lnNumDocs = 0, lnNumClasses = this.paDocuments.length;
+        
+        this.mxCollectWords();
+        
+        for(int i = 0; i < lnNumClasses; i++)
+        {
+            lnNumDocs = this.paDocuments[i].length;
+            //Class Probability 
+            this.poClassificador.setProbaClass(i, (float)lnNumDocs/(float)this.poClassificador.getNumDocs());
+        }
+    }
+    
+    private void mxCollectWords()
+    {
+        int lnNumDoc = 0, lnNumClasses = this.paDocuments.length;
+        
+        for(int i = 0; i < lnNumClasses; i++)
+        {
+            lnNumDoc = this.paDocuments[i].length;
+            for(int j = 0; j < lnNumDoc; j++)
+            {
+                this.poClassificador.mxAddDocument(this.paDocuments[i][j], i);
+            }
+        }
+    }
     /**
      * @param args the command line arguments
      */

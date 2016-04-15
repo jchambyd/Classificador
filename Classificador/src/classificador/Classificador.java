@@ -5,6 +5,7 @@
  */
 package classificador;
 import Interface.Interface;
+import java.util.Hashtable;
 
 /**
  *
@@ -12,6 +13,46 @@ import Interface.Interface;
  */
 public class Classificador {
 
+    private int pnNumWords = 0;
+    private int pnNumDocs = 0;
+    private Classe paClasses[];
+    private Hashtable <String,Integer> poVocabulary = new Hashtable<String,Integer>();
+    
+    public Classificador(String taClasses[])
+    {
+        this.paClasses = new Classe[taClasses.length];
+        this.mxInitializeClasses(taClasses);
+    }
+    
+    private void mxInitializeClasses(String taClasses[])
+    {
+        int lnNunClasses = taClasses.length;
+        for(int i = 0; i < lnNunClasses; i++)
+        {
+            this.paClasses[i] = new Classe(taClasses[i]);
+        }
+    }
+    
+    public void mxAddDocument(String tsPath, int lnClasse)
+    {
+        this.pnNumDocs++;
+    }
+    
+    public void setProbaClass(int tnClass, float tnProCla)
+    {
+        this.paClasses[tnClass].setProbClass(tnProCla);
+    }
+    
+    public int getNumDocs()
+    {
+        return this.pnNumDocs;
+    }
+    
+    public void mxCalculateProbabilityTerms()
+    {
+        
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -19,6 +60,5 @@ public class Classificador {
         // TODO code application logic here
         Interface i = new Interface();
         i.setVisible(true);
-    }
-    
+    }    
 }
