@@ -8,6 +8,7 @@ package Interface;
 import java.io.File;
 import java.io.FilenameFilter;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -36,7 +37,6 @@ public class Interface extends javax.swing.JFrame {
         cmbSelFil = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblFilesSelected = new javax.swing.JTable();
-        cmbTraining = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblListFiles = new javax.swing.JTable();
         cmbMoveItem = new javax.swing.JButton();
@@ -49,6 +49,13 @@ public class Interface extends javax.swing.JFrame {
         spnEnd = new javax.swing.JSpinner();
         lblEnd = new javax.swing.JLabel();
         cmbMoveRange = new javax.swing.JButton();
+        cmbExit = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        cmbTraining = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        spnFolds = new javax.swing.JSpinner();
+        pgbProgress = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Classificador de textos");
@@ -68,7 +75,7 @@ public class Interface extends javax.swing.JFrame {
 
             },
             new String [] {
-                "FIle Name"
+                "Testing's Files"
             }
         ) {
             Class[] types = new Class [] {
@@ -92,14 +99,12 @@ public class Interface extends javax.swing.JFrame {
             tblFilesSelected.getColumnModel().getColumn(0).setMaxWidth(300);
         }
 
-        cmbTraining.setText("Training");
-
         tblListFiles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "FIle Name"
+                "List Files"
             }
         ) {
             Class[] types = new Class [] {
@@ -212,7 +217,6 @@ public class Interface extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cmbTraining, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cmbSelFil)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -248,9 +252,70 @@ public class Interface extends javax.swing.JFrame {
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
-                .addComponent(cmbTraining)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        cmbExit.setText("Exit");
+        cmbExit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                cmbExitMousePressed(evt);
+            }
+        });
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        cmbTraining.setText("Training");
+        cmbTraining.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                cmbTrainingMousePressed(evt);
+            }
+        });
+
+        jLabel1.setText("Cross Validation");
+
+        jLabel2.setText("N° Folds:");
+
+        pgbProgress.setStringPainted(true);
+        pgbProgress.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                pgbProgressStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addGap(18, 18, 18)
+                        .addComponent(spnFolds, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cmbTraining, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(pgbProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(spnFolds, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbTraining))
+                .addGap(18, 18, 18)
+                .addComponent(pgbProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -259,15 +324,26 @@ public class Interface extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(cmbExit))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addComponent(cmbExit)
+                .addContainerGap())
         );
 
         pack();
@@ -306,6 +382,22 @@ public class Interface extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.mxReturnAll();
     }//GEN-LAST:event_cmbReturnAllMousePressed
+
+    private void cmbExitMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbExitMousePressed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_cmbExitMousePressed
+
+    private void cmbTrainingMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbTrainingMousePressed
+        // TODO add your handling code here:
+        this.mxStartTraining();
+    }//GEN-LAST:event_cmbTrainingMousePressed
+
+    private void pgbProgressStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pgbProgressStateChanged
+        // TODO add your handling code here:
+        if(this.pgbProgress.getValue() == 100)
+            JOptionPane.showMessageDialog(null, "Training Complete!");
+    }//GEN-LAST:event_pgbProgressStateChanged
 
     private void mxMoveAll()
     {
@@ -411,6 +503,24 @@ public class Interface extends javax.swing.JFrame {
             }
         }     
     }
+    
+    private void mxStartTraining()
+    {
+        new Thread(){
+            @Override
+            public void run()
+            {
+                for(int i = 0; i <= 10000; i++)
+                {
+                    if(i%100 == 0)
+                        pgbProgress.setValue(i/100);
+                    for(int j = 0; j < 100;j++)
+                        System.out.println("s");
+                }
+            }
+        }.start();
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -447,6 +557,7 @@ public class Interface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cmbExit;
     private javax.swing.JButton cmbMoveAll;
     private javax.swing.JButton cmbMoveItem;
     private javax.swing.JButton cmbMoveRange;
@@ -454,14 +565,19 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JButton cmbReturnItem;
     private javax.swing.JButton cmbSelFil;
     private javax.swing.JButton cmbTraining;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblBegin;
     private javax.swing.JLabel lblEnd;
+    private javax.swing.JProgressBar pgbProgress;
     private javax.swing.JSpinner spnBegin;
     private javax.swing.JSpinner spnEnd;
+    private javax.swing.JSpinner spnFolds;
     private javax.swing.JTable tblFilesSelected;
     private javax.swing.JTable tblListFiles;
     // End of variables declaration//GEN-END:variables
