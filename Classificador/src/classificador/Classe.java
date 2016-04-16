@@ -30,13 +30,10 @@ public class Classe {
     public void mxAddWord(String psWord)
     {
         if(this.poWords.containsKey(psWord))
-        {
             this.poWords.put(psWord, (Integer)this.poWords.get(psWord)+1);
-        }
         else
-        {
             this.poWords.put(psWord, 1);
-        }
+        
         this.pnNumWords++;
     }
     
@@ -44,7 +41,9 @@ public class Classe {
     {
         float lnProbabi = 0.0f;
         //Number of times word "tsWord" occurs
-        int lnCountWord = this.poWords.get(tsWord);
+        Integer lnCountWord = this.poWords.get(tsWord);
+        if(lnCountWord == null)
+            lnCountWord = 0;
         
         lnProbabi = (float)(1 + lnCountWord)/(float)(this.pnNumWords + tnLenVocabulary);
         this.poProbWord.put(tsWord, lnProbabi);

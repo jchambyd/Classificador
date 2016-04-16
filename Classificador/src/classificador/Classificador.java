@@ -5,6 +5,7 @@
  */
 package classificador;
 import Interface.Interface;
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 /**
@@ -48,9 +49,16 @@ public class Classificador {
         return this.pnNumDocs;
     }
     
-    public void mxCalculateProbabilityTerms()
+    public void mxCalculateProbabilityTerms(int tnClass)
     {
+        Enumeration<String> loWords = this.poVocabulary.keys();
+        int lnNumVocabulary = this.poVocabulary.size();        
         
+        while(loWords.hasMoreElements())
+        {
+            String lsWord = loWords.nextElement();            
+            this.paClasses[tnClass].mxCalculateProb(lsWord, lnNumVocabulary);            
+        }
     }
     
     /**

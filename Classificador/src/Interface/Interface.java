@@ -534,6 +534,8 @@ public class Interface extends javax.swing.JFrame {
             lnNumDocs = this.paDocuments[i].length;
             //Class Probability 
             this.poClassificador.setProbaClass(i, (float)lnNumDocs/(float)this.poClassificador.getNumDocs());
+            
+            this.poClassificador.mxCalculateProbabilityTerms(i);
         }
     }
     
