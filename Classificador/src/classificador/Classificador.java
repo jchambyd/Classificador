@@ -5,8 +5,12 @@
  */
 package classificador;
 import Interface.Interface;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  *
@@ -34,9 +38,97 @@ public class Classificador {
         }
     }
     
-    public void mxAddDocument(String tsPath, int lnClasse)
+    public void mxAddDocument(String tsPath, int tnClasse)
     {
+        File file = new File(tsPath);
+        Scanner loScan;
+        String lsLine, lsWord;
+        StringTokenizer loToken;
+        
+        this.paClasses[tnClasse].mxAddDocument();
+        try
+        {
+            //Read document
+            loScan = new Scanner(file);
+            if (loScan.hasNextLine()) 
+            {
+                lsLine = loScan.nextLine();
+                loToken = new StringTokenizer(lsLine, " ,;.(){}[]-!|¡?¿");
+                while(loToken.hasMoreTokens()) 
+                {
+                    lsWord = loToken.nextToken();
+                    
+                    //Add word to classificador
+                    this.pnNumWords++;
+                    
+                    if(this.poVocabulary.containsKey(lsWord))
+                        this.poVocabulary.put(lsWord, this.poVocabulary.get(lsWord)+1);
+                    else
+                        this.poVocabulary.put(lsWord, 1);
+                    
+                    //Add word to class
+                    this.paClasses[tnClasse].mxAddWord(lsWord);
+                }                
+            }              
+        }   
+        catch (FileNotFoundException e) 
+        {
+            e.printStackTrace();
+        }
         this.pnNumDocs++;
+    }
+    
+    public int mxClassificarDocument(String tsPath)
+    {
+        File file = new File(tsPath);
+        Scanner loScan;
+        String lsLine, lsWord;
+        StringTokenizer loToken;
+        int lnNumClasses = this.paClasses.length;
+        double laProbabilities[] = new double[lnNumClasses];
+        
+        try
+        {
+            for(int i = 0; i < lnNumClasses; i++)
+                laProbabilities[i] = Math.log(this.paClasses[i].mxGetClassProbability());
+                        
+            //Read document
+            loScan = new Scanner(file);
+            if (loScan.hasNextLine()) 
+            {
+                lsLine = loScan.nextLine();
+                loToken = new StringTokenizer(lsLine, " ,;.(){}[]-!|¡?¿");
+                while(loToken.hasMoreTokens()) 
+                {
+                    lsWord = loToken.nextToken();
+                    if(this.poVocabulary.containsKey(lsWord))
+                    {
+                        for(int i = 0; i < lnNumClasses; i++)
+                            laProbabilities[i] += Math.log(this.paClasses[i].mxGetProbability(lsWord));                        
+                    }
+                }
+            }
+        }
+        catch (FileNotFoundException e) 
+        {
+            e.printStackTrace();
+        }
+        return this.mxMaxValue(laProbabilities);
+    }
+    
+    public int mxMaxValue(double taValues[])
+    {
+        double lnMaxValue = taValues[0];
+        int lnMaxIndex = 0;
+        for(int i = 1; i < taValues.length; i++)
+        {
+            if(taValues[i] > lnMaxValue)
+            {
+                lnMaxValue = taValues[i];
+                lnMaxIndex = i;
+            }
+        }
+        return lnMaxIndex;
     }
     
     public void setProbaClass(int tnClass, float tnProCla)
@@ -58,7 +150,7 @@ public class Classificador {
         {
             String lsWord = loWords.nextElement();            
             this.paClasses[tnClass].mxCalculateProb(lsWord, lnNumVocabulary);            
-        }
+        }        
     }
     
     /**

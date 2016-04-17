@@ -18,6 +18,7 @@ import classificador.*;
 public class Interface extends javax.swing.JFrame {
 
     private String paDocuments [][];
+    private String psDirectory;
     private Classificador poClassificador;
     /**
      * Creates new form Interface
@@ -497,6 +498,9 @@ public class Interface extends javax.swing.JFrame {
                    return false;
                 }
             };
+            
+            this.psDirectory = loFolderSelected.getPath() + "/";
+            
             laListFiles = loFolderSelected.listFiles(loNameFilter);
             for (File loFile: laListFiles)
             {
@@ -508,6 +512,26 @@ public class Interface extends javax.swing.JFrame {
     
     private void mxStartTraining()
     {
+        DefaultTableModel loModelSelected = (DefaultTableModel)this.tblFilesSelected.getModel();
+        int lnNumFiles = loModelSelected.getRowCount();
+     
+        this.paDocuments = new String[1][];
+        
+        this.paDocuments[0] = new String[lnNumFiles];
+        
+        for(int i = 0; i < lnNumFiles; i++)
+        {
+            this.paDocuments[0][i] = this.psDirectory +  loModelSelected.getValueAt(i, NORMAL).toString();
+        }
+        
+        String laClasses[] = new String[1];
+        laClasses[0] = "pos";
+        
+        this.poClassificador = new Classificador(laClasses);
+        
+        this.mxLearnNaiveBayesText(0, 0);
+        
+        /*
         new Thread(){
             @Override
             public void run()
@@ -521,6 +545,7 @@ public class Interface extends javax.swing.JFrame {
                 }
             }
         }.start();
+        */
     }
     
     private void mxLearnNaiveBayesText(int tnBeginTeste, int tnEndTeste)

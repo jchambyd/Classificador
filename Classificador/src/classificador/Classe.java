@@ -15,9 +15,9 @@ public class Classe {
     private String psName = "";
     private int pnNumWords = 0;
     private int pnNumDoc = 0;
-    private static float pnProbClasse = 0.0F;
-    private static Hashtable <String,Integer> poWords = new Hashtable<String,Integer>();
-    private static Hashtable <String,Float> poProbWord = new Hashtable<String,Float>();
+    private float pnProbClasse = 0.0F;
+    private Hashtable <String,Integer> poWords = new Hashtable<String,Integer>();
+    private Hashtable <String,Float> poProbWord = new Hashtable<String,Float>();
     
     public Classe(String tsName)
     {
@@ -30,7 +30,7 @@ public class Classe {
     public void mxAddWord(String psWord)
     {
         if(this.poWords.containsKey(psWord))
-            this.poWords.put(psWord, (Integer)this.poWords.get(psWord)+1);
+            this.poWords.put(psWord, this.poWords.get(psWord)+1);
         else
             this.poWords.put(psWord, 1);
         
@@ -51,5 +51,14 @@ public class Classe {
     public void setProbClass(float tnProCla)
     {
         this.pnProbClasse = tnProCla;
+    }
+    
+    public float mxGetProbability(String tsWord)
+    {        
+        return this.poProbWord.get(tsWord);
+    }
+    public float mxGetClassProbability()
+    {
+        return this.pnProbClasse;
     }
 }
