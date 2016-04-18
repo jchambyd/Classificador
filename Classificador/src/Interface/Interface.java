@@ -11,6 +11,12 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import classificador.*;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
 /**
  *
  * @author jorge
@@ -25,6 +31,7 @@ public class Interface extends javax.swing.JFrame {
      */
     public Interface() {
         initComponents();
+        this.mxFormatTable();
     }
 
     /**
@@ -38,20 +45,8 @@ public class Interface extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         cmbSelFil = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblFilesSelected = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblListFiles = new javax.swing.JTable();
-        cmbMoveItem = new javax.swing.JButton();
-        cmbReturnItem = new javax.swing.JButton();
-        cmbMoveAll = new javax.swing.JButton();
-        cmbReturnAll = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        lblBegin = new javax.swing.JLabel();
-        spnBegin = new javax.swing.JSpinner();
-        spnEnd = new javax.swing.JSpinner();
-        lblEnd = new javax.swing.JLabel();
-        cmbMoveRange = new javax.swing.JButton();
         cmbExit = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         cmbTraining = new javax.swing.JButton();
@@ -73,189 +68,35 @@ public class Interface extends javax.swing.JFrame {
             }
         });
 
-        tblFilesSelected.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Testing's Files"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tblFilesSelected);
-        if (tblFilesSelected.getColumnModel().getColumnCount() > 0) {
-            tblFilesSelected.getColumnModel().getColumn(0).setPreferredWidth(100);
-            tblFilesSelected.getColumnModel().getColumn(0).setMaxWidth(300);
-        }
-
         tblListFiles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "List Files"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jScrollPane2.setViewportView(tblListFiles);
-        if (tblListFiles.getColumnModel().getColumnCount() > 0) {
-            tblListFiles.getColumnModel().getColumn(0).setPreferredWidth(100);
-            tblListFiles.getColumnModel().getColumn(0).setMaxWidth(300);
-        }
-
-        cmbMoveItem.setText(">");
-        cmbMoveItem.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                cmbMoveItemMousePressed(evt);
-            }
-        });
-
-        cmbReturnItem.setText("<");
-        cmbReturnItem.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                cmbReturnItemMousePressed(evt);
-            }
-        });
-
-        cmbMoveAll.setText(">>");
-        cmbMoveAll.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                cmbMoveAllMousePressed(evt);
-            }
-        });
-
-        cmbReturnAll.setText("<<");
-        cmbReturnAll.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                cmbReturnAllMousePressed(evt);
-            }
-        });
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel2.setName(""); // NOI18N
-
-        lblBegin.setText("Begin");
-
-        spnBegin.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                spnBeginFocusLost(evt);
-            }
-        });
-
-        lblEnd.setText("End");
-
-        cmbMoveRange.setText(">>");
-        cmbMoveRange.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                cmbMoveRangeMousePressed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(lblBegin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spnBegin, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblEnd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(6, 6, 6)
-                .addComponent(spnEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(cmbMoveRange, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(spnBegin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBegin)
-                    .addComponent(cmbMoveRange)
-                    .addComponent(spnEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEnd))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cmbSelFil)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cmbMoveAll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cmbReturnAll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cmbMoveItem, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cmbReturnItem, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(123, 123, 123))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbSelFil, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(21, 21, 21)
                 .addComponent(cmbSelFil)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addComponent(cmbMoveItem)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbReturnItem)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbMoveAll)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbReturnAll))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         cmbExit.setText("Exit");
@@ -304,7 +145,7 @@ public class Interface extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addComponent(pgbProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(75, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -328,13 +169,14 @@ public class Interface extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(cmbExit))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbExit, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -344,7 +186,7 @@ public class Interface extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cmbExit)
                 .addContainerGap())
         );
@@ -356,35 +198,6 @@ public class Interface extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.mxSelectFiles();
     }//GEN-LAST:event_cmbSelFilMousePressed
-
-    private void spnBeginFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_spnBeginFocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_spnBeginFocusLost
-
-    private void cmbMoveItemMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbMoveItemMousePressed
-        // TODO add your handling code here:
-        this.mxMoveItem();
-    }//GEN-LAST:event_cmbMoveItemMousePressed
-
-    private void cmbReturnItemMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbReturnItemMousePressed
-        // TODO add your handling code here:
-        this.mxReturnItem();
-    }//GEN-LAST:event_cmbReturnItemMousePressed
-
-    private void cmbMoveAllMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbMoveAllMousePressed
-        // TODO add your handling code here:
-        this.mxMoveAll();
-    }//GEN-LAST:event_cmbMoveAllMousePressed
-
-    private void cmbMoveRangeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbMoveRangeMousePressed
-        // TODO add your handling code here:
-        this.mxMoveRange();
-    }//GEN-LAST:event_cmbMoveRangeMousePressed
-
-    private void cmbReturnAllMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbReturnAllMousePressed
-        // TODO add your handling code here:
-        this.mxReturnAll();
-    }//GEN-LAST:event_cmbReturnAllMousePressed
 
     private void cmbExitMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbExitMousePressed
         // TODO add your handling code here:
@@ -401,89 +214,95 @@ public class Interface extends javax.swing.JFrame {
         if(this.pgbProgress.getValue() == 100)
             JOptionPane.showMessageDialog(null, "Training Complete!");
     }//GEN-LAST:event_pgbProgressStateChanged
+  
+    
+    public void mxFormatTable()
+    {
+        this.tblListFiles.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+            },
+            new String [] {
+                "Class", "# Documents", "SelectFiles"
+            }
+        ) {
+        Class[] types = new Class [] {
+            java.lang.String.class, java.lang.Integer.class, JButton.class
+            };
 
-    private void mxMoveAll()
-    {
-        DefaultTableModel loModelList = (DefaultTableModel)this.tblListFiles.getModel();
-        DefaultTableModel loModelSelected = (DefaultTableModel)this.tblFilesSelected.getModel();
-        int lnNumFiles = loModelList.getRowCount();
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         
-        for(int i = 0; i < lnNumFiles; i++)
-        {
-            loModelSelected.addRow(new Object[]{loModelList.getValueAt(0, NORMAL)});
-            loModelList.removeRow(0);
-        }
+        // El objetivo de la siguiente línea es indicar el CellRenderer que será utilizado para dibujar el botón
+        tblListFiles.setDefaultRenderer(JButton.class, new TableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable jtable, Object objeto, boolean estaSeleccionado, boolean tieneElFoco, int fila, int columna) {
+                /**
+                 * Observen que todo lo que hacemos en éste método es retornar el objeto que se va a dibujar en la 
+                 * celda. Esto significa que se dibujará en la celda el objeto que devuelva el TableModel. También 
+                 * significa que este renderer nos permitiría dibujar cualquier objeto gráfico en la grilla, pues 
+                 * retorna el objeto tal y como lo recibe.
+                 */
+                return (Component) objeto;
+            }
+        });
+        
+        this.tblListFiles.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int lnRow = tblListFiles.rowAtPoint(e.getPoint());
+                int lnColumn = tblListFiles.columnAtPoint(e.getPoint());
+
+                if (tblListFiles.getModel().getColumnClass(lnColumn).equals(JButton.class)) 
+                {
+                    for (int i = 0; i < tblListFiles.getModel().getColumnCount(); i++) 
+                    {
+                        if (tblListFiles.getModel().getColumnName(i).equals("Class")) 
+                        {
+                            String lsPath = psDirectory + tblListFiles.getModel().getValueAt(lnRow, i);
+                            String laDocuments[] = mxGetDocuments(lsPath);
+                            mxSaveDocumentsSelected(laDocuments, lnRow);
+                            
+                            for(int k = 0; k < laDocuments.length; k++)
+                                System.out.println(laDocuments[k]);
+                        }
+                    }
+                }
+            }
+        });
     }
     
-    private void mxReturnAll()
+    private void mxSaveDocumentsSelected(String[] taDocuments, int tnClass)
     {
-        DefaultTableModel loModelList = (DefaultTableModel)this.tblListFiles.getModel();
-        DefaultTableModel loModelSelected = (DefaultTableModel)this.tblFilesSelected.getModel();
-        int lnNumFiles = loModelSelected.getRowCount();
-        
-        for(int i = 0; i < lnNumFiles; i++)
-        {
-            loModelList.addRow(new Object[]{loModelSelected.getValueAt(0, NORMAL)});
-            loModelSelected.removeRow(0);
-        }
+        this.tblListFiles.setValueAt(taDocuments.length, tnClass, 1);
+        this.paDocuments[tnClass] = taDocuments;
     }
     
-    private void mxMoveItem()
+    private String[] mxGetDocuments(String tsPath)
     {
-        int lnFilSel = this.tblListFiles.getSelectedRow();
-        
-        if(lnFilSel < 0)
-        {
-            return;
-        }
-        
-        DefaultTableModel loModelList = (DefaultTableModel)this.tblListFiles.getModel();
-        DefaultTableModel loModelSelected = (DefaultTableModel)this.tblFilesSelected.getModel();
-        loModelSelected.addRow(new Object[]{loModelList.getValueAt(lnFilSel, NORMAL)});
-        loModelList.removeRow(lnFilSel);
+        File loFolder = new File(tsPath);
+        SelectFiles loForm = new SelectFiles(this, true, loFolder);
+        loForm.setVisible(true);
+        return loForm.mxGetDocumentsSelected();
     }
-    
-    private void mxReturnItem()
-    {
-        int lnFilSel = this.tblFilesSelected.getSelectedRow();
-        if(lnFilSel < 0)
-        {
-            return;
-        }
-        DefaultTableModel loModelList = (DefaultTableModel)this.tblListFiles.getModel();
-        DefaultTableModel loModelSelected = (DefaultTableModel)this.tblFilesSelected.getModel();
-        loModelList.addRow(new Object[]{loModelSelected.getValueAt(lnFilSel, NORMAL)});
-        loModelSelected.removeRow(lnFilSel);
-    }
-    
-    private void mxMoveRange()
-    {
-        DefaultTableModel loModelList = (DefaultTableModel)this.tblListFiles.getModel();
-        DefaultTableModel loModelSelected = (DefaultTableModel)this.tblFilesSelected.getModel();
-        int lnNumFiles = loModelList.getRowCount();
-        
-        for(int i = 0; i < lnNumFiles; i++)
-        {
-            loModelSelected.addRow(new Object[]{loModelList.getValueAt(0, NORMAL)});
-            loModelList.removeRow(0);
-        }
-    }    
     
     private void mxSelectFiles()
     {
         JFileChooser loFileChooser = new JFileChooser();
-        File loFolderSelected, laListFiles[];
+        File laFolderSelected[], laListFiles[];
         FilenameFilter loNameFilter;
         int result = 0;
         
         loFileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         loFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        loFileChooser.setMultiSelectionEnabled(true);
         loFileChooser.setAcceptAllFileFilterUsed(false);
         
         result = loFileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) 
         {
-            loFolderSelected = loFileChooser.getSelectedFile();
+            laFolderSelected = loFileChooser.getSelectedFiles();
             loNameFilter = new FilenameFilter() 
             {   
                 @Override
@@ -499,33 +318,27 @@ public class Interface extends javax.swing.JFrame {
                 }
             };
             
-            this.psDirectory = loFolderSelected.getPath() + "/";
+            this.paDocuments = new String[laFolderSelected.length][];
             
-            laListFiles = loFolderSelected.listFiles(loNameFilter);
-            for (File loFile: laListFiles)
+            for(File loFolderSelected : laFolderSelected)
             {
-                if (loFile.isFile())
-                    ((DefaultTableModel)this.tblListFiles.getModel()).addRow(new Object[]{loFile.getName()});                
+                this.psDirectory = loFolderSelected.getParentFile().getPath() + "/";                
+                if (loFolderSelected.isDirectory())
+                    ((DefaultTableModel)this.tblListFiles.getModel()).addRow(new Object[]{loFolderSelected.getName(), loFolderSelected.listFiles(loNameFilter).length, new JButton("Select Files")});
             }
-        }     
+        }
     }
     
     private void mxStartTraining()
     {
-        DefaultTableModel loModelSelected = (DefaultTableModel)this.tblFilesSelected.getModel();
-        int lnNumFiles = loModelSelected.getRowCount();
-     
-        this.paDocuments = new String[1][];
-        
-        this.paDocuments[0] = new String[lnNumFiles];
+        DefaultTableModel loModelList = (DefaultTableModel)this.tblListFiles.getModel();
+        int lnNumFiles = loModelList.getRowCount();
+        String laClasses[] = new String[lnNumFiles];
         
         for(int i = 0; i < lnNumFiles; i++)
         {
-            this.paDocuments[0][i] = this.psDirectory +  loModelSelected.getValueAt(i, NORMAL).toString();
+            laClasses[i] = loModelList.getValueAt(i, 0).toString();
         }
-        
-        String laClasses[] = new String[1];
-        laClasses[0] = "pos";
         
         this.poClassificador = new Classificador(laClasses);
         
@@ -614,27 +427,15 @@ public class Interface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmbExit;
-    private javax.swing.JButton cmbMoveAll;
-    private javax.swing.JButton cmbMoveItem;
-    private javax.swing.JButton cmbMoveRange;
-    private javax.swing.JButton cmbReturnAll;
-    private javax.swing.JButton cmbReturnItem;
     private javax.swing.JButton cmbSelFil;
     private javax.swing.JButton cmbTraining;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lblBegin;
-    private javax.swing.JLabel lblEnd;
     private javax.swing.JProgressBar pgbProgress;
-    private javax.swing.JSpinner spnBegin;
-    private javax.swing.JSpinner spnEnd;
     private javax.swing.JSpinner spnFolds;
-    private javax.swing.JTable tblFilesSelected;
     private javax.swing.JTable tblListFiles;
     // End of variables declaration//GEN-END:variables
 }

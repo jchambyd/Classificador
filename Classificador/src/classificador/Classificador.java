@@ -68,9 +68,9 @@ public class Classificador {
                     
                     //Add word to class
                     this.paClasses[tnClasse].mxAddWord(lsWord);
-                }                
-            }              
-        }   
+                }
+            }
+        }
         catch (FileNotFoundException e) 
         {
             e.printStackTrace();
