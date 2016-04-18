@@ -8,6 +8,7 @@ package Interface;
 import static java.awt.Frame.NORMAL;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Comparator;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -377,7 +378,8 @@ public class SelectFiles extends javax.swing.JDialog {
         }
         
         return laDocuments;
-    }
+    }    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmbMoveAll;
@@ -397,4 +399,15 @@ public class SelectFiles extends javax.swing.JDialog {
     private javax.swing.JTable tblFilesSelected;
     private javax.swing.JTable tblListFiles;
     // End of variables declaration//GEN-END:variables
+}
+
+class NameComparator implements Comparator<String> 
+{
+    public int compare(String tsStrOne, String tsStrTwo) 
+    {
+        int lnStrOne = Integer.parseInt(tsStrOne.substring(0, tsStrOne.length() - 4));
+        int lnStrTwo = Integer.parseInt(tsStrTwo.substring(0, tsStrTwo.length() - 4));
+        
+	return Integer.compare(lnStrOne, lnStrTwo);
+    }
 }

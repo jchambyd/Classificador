@@ -238,12 +238,6 @@ public class Interface extends javax.swing.JFrame {
         tblListFiles.setDefaultRenderer(JButton.class, new TableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable jtable, Object objeto, boolean estaSeleccionado, boolean tieneElFoco, int fila, int columna) {
-                /**
-                 * Observen que todo lo que hacemos en éste método es retornar el objeto que se va a dibujar en la 
-                 * celda. Esto significa que se dibujará en la celda el objeto que devuelva el TableModel. También 
-                 * significa que este renderer nos permitiría dibujar cualquier objeto gráfico en la grilla, pues 
-                 * retorna el objeto tal y como lo recibe.
-                 */
                 return (Component) objeto;
             }
         });
@@ -263,9 +257,6 @@ public class Interface extends javax.swing.JFrame {
                             String lsPath = psDirectory + tblListFiles.getModel().getValueAt(lnRow, i);
                             String laDocuments[] = mxGetDocuments(lsPath);
                             mxSaveDocumentsSelected(laDocuments, lnRow);
-                            
-                            for(int k = 0; k < laDocuments.length; k++)
-                                System.out.println(laDocuments[k]);
                         }
                     }
                 }
@@ -332,9 +323,12 @@ public class Interface extends javax.swing.JFrame {
     private void mxStartTraining()
     {
         DefaultTableModel loModelList = (DefaultTableModel)this.tblListFiles.getModel();
+        String laClasses[];
         int lnNumFiles = loModelList.getRowCount();
-        String laClasses[] = new String[lnNumFiles];
         
+        laClasses = new String[lnNumFiles];
+        
+        //Load classes
         for(int i = 0; i < lnNumFiles; i++)
         {
             laClasses[i] = loModelList.getValueAt(i, 0).toString();
