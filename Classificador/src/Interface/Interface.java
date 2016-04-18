@@ -26,6 +26,7 @@ public class Interface extends javax.swing.JFrame {
     private String paDocuments [][];
     private String psDirectory;
     private Classificador poClassificador;
+    private int pnTotalDocuments = 0;
     /**
      * Creates new form Interface
      */
@@ -211,8 +212,6 @@ public class Interface extends javax.swing.JFrame {
 
     private void pgbProgressStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pgbProgressStateChanged
         // TODO add your handling code here:
-        if(this.pgbProgress.getValue() == 100)
-            JOptionPane.showMessageDialog(null, "Training Complete!");
     }//GEN-LAST:event_pgbProgressStateChanged
   
     
@@ -275,6 +274,7 @@ public class Interface extends javax.swing.JFrame {
         File loFolder = new File(tsPath);
         SelectFiles loForm = new SelectFiles(this, true, loFolder);
         loForm.setVisible(true);
+        loForm.setLocationRelativeTo(this);
         return loForm.mxGetDocumentsSelected();
     }
     
@@ -332,27 +332,20 @@ public class Interface extends javax.swing.JFrame {
         for(int i = 0; i < lnNumFiles; i++)
         {
             laClasses[i] = loModelList.getValueAt(i, 0).toString();
+            this.pnTotalDocuments += Integer.parseInt(loModelList.getValueAt(i, 1).toString());
         }
         
         this.poClassificador = new Classificador(laClasses);
         
-        this.mxLearnNaiveBayesText(0, 0);
         
-        /*
         new Thread(){
             @Override
             public void run()
             {
-                for(int i = 0; i <= 10000; i++)
-                {
-                    if(i%100 == 0)
-                        pgbProgress.setValue(i/100);
-                    for(int j = 0; j < 100;j++)
-                        System.out.println("s");
-                }
-            }
-        }.start();
-        */
+                mxLearnNaiveBayesText(0, 0);                
+                JOptionPane.showMessageDialog(null, "Training Complete!");
+            }                            
+        }.start();        
     }
     
     private void mxLearnNaiveBayesText(int tnBeginTeste, int tnEndTeste)
@@ -361,19 +354,22 @@ public class Interface extends javax.swing.JFrame {
         
         this.mxCollectWords();
         
+        System.out.println("Collect words complete!");
+        
         for(int i = 0; i < lnNumClasses; i++)
         {
             lnNumDocs = this.paDocuments[i].length;
             //Class Probability 
             this.poClassificador.setProbaClass(i, (float)lnNumDocs/(float)this.poClassificador.getNumDocs());
             
-            this.poClassificador.mxCalculateProbabilityTerms(i);
+            this.poClassificador.mxCalculateProbabilityTerms(i);            
         }
+        this.pgbProgress.setValue(100);
     }
     
     private void mxCollectWords()
     {
-        int lnNumDoc = 0, lnNumClasses = this.paDocuments.length;
+        int lnNumDoc = 0, lnNumClasses = this.paDocuments.length, lnCont = 0;
         
         for(int i = 0; i < lnNumClasses; i++)
         {
@@ -381,7 +377,14 @@ public class Interface extends javax.swing.JFrame {
             for(int j = 0; j < lnNumDoc; j++)
             {
                 this.poClassificador.mxAddDocument(this.paDocuments[i][j], i);
-            }
+                int lnValue = (int)(95 * lnCont / this.pnTotalDocuments);
+                
+                if(lnValue % 3 == 0)
+                {                    
+                    this.pgbProgress.setValue(lnValue);
+                }
+                lnCont++;
+            }            
         }
     }
     /**
