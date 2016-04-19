@@ -78,8 +78,8 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="cmbSelFil" alignment="1" min="-2" max="-2" attributes="0"/>
                       <Component id="jScrollPane2" alignment="1" min="-2" pref="381" max="-2" attributes="0"/>
+                      <Component id="cmbSelFil" alignment="1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -88,9 +88,9 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                  <Component id="cmbSelFil" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="cmbSelFil" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   <Component id="jScrollPane2" min="-2" pref="135" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -100,8 +100,8 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="cmbSelFil">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Select FIles"/>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="text" type="java.lang.String" value="Select Files"/>
+            <Property name="toolTipText" type="java.lang.String" value="Select multiple folders than contain the documents. Each folder represent a class."/>
           </Properties>
           <Events>
             <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cmbSelFilMousePressed"/>
@@ -151,11 +151,6 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
-                  <Component id="pgbProgress" min="-2" pref="303" max="-2" attributes="0"/>
-                  <EmptySpace pref="51" max="32767" attributes="0"/>
-              </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
@@ -176,6 +171,14 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="pgbProgress" min="-2" pref="303" max="-2" attributes="0"/>
+                      <Component id="lblProcess" min="-2" pref="218" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="51" max="32767" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -192,7 +195,10 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="pgbProgress" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="cmbViewResult" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="cmbViewResult" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblProcess" min="-2" pref="17" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -218,6 +224,11 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JSpinner" name="spnFolds">
+          <Properties>
+            <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="10" type="code"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JProgressBar" name="pgbProgress">
           <Properties>
@@ -235,6 +246,8 @@
           <Events>
             <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cmbViewResultMousePressed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblProcess">
         </Component>
       </SubComponents>
     </Container>

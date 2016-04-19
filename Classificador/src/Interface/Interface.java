@@ -14,6 +14,8 @@ import classificador.*;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import java.util.Comparator;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -60,14 +62,15 @@ public class Interface extends javax.swing.JFrame {
         spnFolds = new javax.swing.JSpinner();
         pgbProgress = new javax.swing.JProgressBar();
         cmbViewResult = new javax.swing.JButton();
+        lblProcess = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Classificador de textos");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        cmbSelFil.setText("Select FIles");
-        cmbSelFil.setToolTipText("");
+        cmbSelFil.setText("Select Files");
+        cmbSelFil.setToolTipText("Select multiple folders than contain the documents. Each folder represent a class.");
         cmbSelFil.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 cmbSelFilMousePressed(evt);
@@ -91,16 +94,16 @@ public class Interface extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbSelFil, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbSelFil, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addContainerGap()
                 .addComponent(cmbSelFil)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(15, 15, 15)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -125,6 +128,8 @@ public class Interface extends javax.swing.JFrame {
 
         jLabel2.setText("N° Folds:");
 
+        spnFolds.setValue(10);
+
         pgbProgress.setStringPainted(true);
         pgbProgress.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -144,10 +149,6 @@ public class Interface extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(pgbProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -163,6 +164,12 @@ public class Interface extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(cmbTraining, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pgbProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProcess, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,7 +184,9 @@ public class Interface extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(pgbProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cmbViewResult)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbViewResult)
+                    .addComponent(lblProcess, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -247,7 +256,7 @@ public class Interface extends javax.swing.JFrame {
             new Object [][] {
             },
             new String [] {
-                "Class", "# Documents", "SelectFiles"
+                "Class", "# Documents", "Select Doc."
             }
         ) {
         Class[] types = new Class [] {
@@ -314,7 +323,7 @@ public class Interface extends javax.swing.JFrame {
         JFileChooser loFileChooser = new JFileChooser();
         File laFolderSelected[];
         FilenameFilter loNameFilter;
-        int result = 0;
+        int result = 0, lnCont = 0;
         
         loFileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         loFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -342,11 +351,31 @@ public class Interface extends javax.swing.JFrame {
             
             this.paDocuments = new String[laFolderSelected.length][];
             
+            Arrays.sort(laFolderSelected, new FileComparator());
+            
+            DefaultTableModel loModelSelected = (DefaultTableModel)this.tblListFiles.getModel();
+            int lnNumFiles = loModelSelected.getRowCount();
+
+            //Clean current selected files
+            for (int i = 0; lnNumFiles > i; i++) 
+                loModelSelected.removeRow(0);
+            
             for(File loFolderSelected : laFolderSelected)
             {
                 this.psDirectory = loFolderSelected.getParentFile().getPath() + "/";                
+                File laListFiles[] = loFolderSelected.listFiles(loNameFilter);
+                lnNumFiles = laListFiles.length;
+                
                 if (loFolderSelected.isDirectory())
-                    ((DefaultTableModel)this.tblListFiles.getModel()).addRow(new Object[]{loFolderSelected.getName(), loFolderSelected.listFiles(loNameFilter).length, new JButton("Select Files")});
+                    ((DefaultTableModel)this.tblListFiles.getModel()).addRow(new Object[]{loFolderSelected.getName(), lnNumFiles, new JButton("Select Doc.")});
+                
+                this.paDocuments[lnCont] = new String[lnNumFiles];
+                
+                for(int i = 0; i < lnNumFiles; i++)
+                {
+                    this.paDocuments[lnCont][i] = laListFiles[i].getPath();                    
+                }                
+                lnCont++;
             }
         }
     }
@@ -374,6 +403,7 @@ public class Interface extends javax.swing.JFrame {
             {
                 mxStart();
                 JOptionPane.showMessageDialog(null, "Training Complete!");
+                lblProcess.setText("Training Complete!");
                 cmbViewResult.setEnabled(true);
             }                            
         }.start();        
@@ -386,6 +416,8 @@ public class Interface extends javax.swing.JFrame {
         for(int i = 0; i < lnNumFolds; i++)
         {
             this.poClassificador.mxInitializeProperties();
+            
+            this.lblProcess.setText("Processing Fold " + (i + 1) + " of " + lnNumFolds + " ...");
             
             this.mxLearnNaiveBayesText(i);
             this.mxClassifyNaiveBayes(i);
@@ -457,16 +489,7 @@ public class Interface extends javax.swing.JFrame {
                 lnClass = this.poClassificador.mxClassificarNaiveBayesText(this.paDocuments[i][lnBegin + j]);
                 laTasas[i][lnClass]++;                
             }            
-        }
-        System.out.println("Fold: " + tnNumFold);
-        for(int i = 0; i < lnNumClasses; i++)
-        {
-            for(int j = 0; j < lnNumClasses; j++)
-            {
-                System.out.print(laTasas[i][j] + "\t");
-            }
-            System.out.println("");
-        }
+        }       
         this.paTestValidation[tnNumFold] = laTasas;
     }
 
@@ -485,8 +508,16 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblProcess;
     private javax.swing.JProgressBar pgbProgress;
     private javax.swing.JSpinner spnFolds;
     private javax.swing.JTable tblListFiles;
     // End of variables declaration//GEN-END:variables
+}
+class FileComparator implements Comparator<File> 
+{
+    public int compare(File tsStrOne, File tsStrTwo) 
+    {        
+	return tsStrTwo.getName().compareTo(tsStrOne.getName());
+    }
 }
