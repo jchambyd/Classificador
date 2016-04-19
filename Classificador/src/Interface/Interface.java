@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.TableCellRenderer;
 /**
  *
@@ -241,6 +242,7 @@ public class Interface extends javax.swing.JFrame {
       
     public void mxFormatTable()
     {
+        FormatTable formato = new FormatTable();
         this.tblListFiles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
             },
@@ -257,8 +259,13 @@ public class Interface extends javax.swing.JFrame {
             }
         });
         
+        this.tblListFiles.setDefaultRenderer(String.class, formato); 
+        this.tblListFiles.setDefaultRenderer(Integer.class, formato);
+        
+        this.tblListFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
         // El objetivo de la siguiente línea es indicar el CellRenderer que será utilizado para dibujar el botón
-        tblListFiles.setDefaultRenderer(JButton.class, new TableCellRenderer() {
+        this.tblListFiles.setDefaultRenderer(JButton.class, new TableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable jtable, Object objeto, boolean estaSeleccionado, boolean tieneElFoco, int fila, int columna) {
                 return (Component) objeto;

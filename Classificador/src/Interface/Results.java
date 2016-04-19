@@ -7,7 +7,9 @@ package Interface;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JButton;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -78,7 +80,7 @@ public class Results extends javax.swing.JDialog {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class
+                java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -206,55 +208,104 @@ public class Results extends javax.swing.JDialog {
     
     public void mxInitTables()
     {
+        FormatTable formato = new FormatTable();
         String laColumnas[] = new String[this.paClasses.length + 1];
+        Class[] laTypes = new Class[this.paClasses.length + 1];
+        
         laColumnas[0] = "Class";
+        laTypes[0] = java.lang.String.class;
         int lnCont = 1;
         for(String lsClasse : this.paClasses)
-            laColumnas[lnCont++] = lsClasse;
-            
-        this.tblConfusionSingle.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-            },
-            laColumnas
-        ));
+        {
+            laColumnas[lnCont] = lsClasse;
+            laTypes[lnCont++] = java.lang.Integer.class;
+        }   
+        final Class [] laTypesFinal = laTypes;
         
-        this.tblConfusion.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-            },
-            laColumnas
-        ));
+        this.tblConfusionSingle.setModel(new javax.swing.table.DefaultTableModel( new Object [][] {},laColumnas)
+        {
+            Class[] types = laTypesFinal;
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        
+        this.tblConfusionSingle.setDefaultRenderer(String.class, formato); 
+        this.tblConfusionSingle.setDefaultRenderer(Integer.class, formato);
+        
+        this.tblConfusion.setModel(new javax.swing.table.DefaultTableModel( new Object [][] {}, laColumnas)
+        {
+            Class[] types = laTypesFinal;
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        this.tblConfusion.setDefaultRenderer(String.class, formato); 
+        this.tblConfusion.setDefaultRenderer(Integer.class, formato);
         
         for(int i = 0; i < this.paResult.length; i++)
         {
             ((DefaultTableModel)this.tblFols.getModel()).addRow(new Object[]{i + 1});
         }
         
-        this.tblFols.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int lnRow = tblFols.rowAtPoint(e.getPoint());
-                mxCargarConfusionSingle(lnRow);        
+        this.tblFols.setDefaultRenderer(Integer.class, formato);
+        this.tblFols.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
+        ListSelectionModel loCellSelectionModel = this.tblFols.getSelectionModel();
+        
+        loCellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                int lnRow = tblFols.getSelectedRow();
+                mxCargarConfusionSingle(lnRow);  
             }
-        });        
+        });
+        
+        this.mxCargarConfusionTotal();
+        
     }
     
     private void mxCargarConfusionSingle(int tnFold) 
     {
-        String laDatos[];
+        Object laDatos[];
         int lnNumRows  = this.tblConfusionSingle.getRowCount();
         for(int i = 0; i < lnNumRows; i++)
             ((DefaultTableModel)this.tblConfusionSingle.getModel()).removeRow(0);
         
         for(int i = 0; i < this.paResult[tnFold].length; i++)
         {
-            laDatos = new String[this.paResult[tnFold][i].length + 1];
+            laDatos = new Object[this.paResult[tnFold][i].length + 1];
             laDatos[0] = this.paClasses[i];
             for(int j = 0; j < this.paResult[tnFold][i].length; j++)
             {
-                laDatos[j+1] = "" + this.paResult[tnFold][i][j];                
+                laDatos[j+1] = (Integer)this.paResult[tnFold][i][j];                
             }
             ((DefaultTableModel)this.tblConfusionSingle.getModel()).addRow(laDatos);
         }
+    }
+    
+    private void mxCargarConfusionTotal()
+    {
+        Object laDatos[];
+        int lnNumFolds = this.paResult.length;
+        int lnNumClasses = this.paResult[0].length;
+        int laResultMedio [][] = new int [lnNumClasses][lnNumClasses];
+        
+        for(int i = 0; i < lnNumFolds; i++)
+            for(int j = 0; j < lnNumClasses; j++)
+                for(int k = 0; k < lnNumClasses; k++)
+                    laResultMedio[j][k] += this.paResult[i][j][k];    
+        
+        for(int i = 0; i < lnNumClasses; i++)
+        {
+            laDatos = new Object[lnNumClasses + 1];
+            laDatos[0] = this.paClasses[i];
+            
+            for(int j = 0; j < lnNumClasses; j++)
+            {
+                laDatos[j+1] = (Integer)(laResultMedio[i][j] / lnNumFolds);                
+            }
+            ((DefaultTableModel)this.tblConfusion.getModel()).addRow(laDatos);
+        }        
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
