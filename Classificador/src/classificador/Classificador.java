@@ -18,15 +18,16 @@ import java.util.StringTokenizer;
  */
 public class Classificador {
 
-    private int pnNumWords = 0;
-    private int pnNumDocs = 0;
+    private int pnNumWords;
+    private int pnNumDocs;
     private Classe paClasses[];
-    private Hashtable <String,Integer> poVocabulary = new Hashtable<String,Integer>();
+    private Hashtable <String,Integer> poVocabulary;
     
     public Classificador(String taClasses[])
     {
         this.paClasses = new Classe[taClasses.length];
         this.mxInitializeClasses(taClasses);
+        this.mxInitializeProperties();
     }
     
     private void mxInitializeClasses(String taClasses[])
@@ -35,6 +36,18 @@ public class Classificador {
         for(int i = 0; i < lnNunClasses; i++)
         {
             this.paClasses[i] = new Classe(taClasses[i]);
+        }
+    }
+    
+    public void mxInitializeProperties()
+    {
+        this.pnNumWords = 0;
+        this.pnNumDocs = 0;
+        this.poVocabulary = new Hashtable<String,Integer>();
+        
+        for(Classe loClasse : this.paClasses)
+        {
+            loClasse.mxInitializeProperties();
         }
     }
     
@@ -50,7 +63,7 @@ public class Classificador {
         {
             //Read document
             loScan = new Scanner(file);
-            if (loScan.hasNextLine()) 
+            if (loScan.hasNextLine())
             {
                 lsLine = loScan.nextLine();
                 loToken = new StringTokenizer(lsLine, " ,;.(){}[]-!|¡?¿");
@@ -78,7 +91,7 @@ public class Classificador {
         this.pnNumDocs++;
     }
     
-    public int mxClassificarDocument(String tsPath)
+    public int mxClassificarNaiveBayesText(String tsPath)
     {
         File file = new File(tsPath);
         Scanner loScan;
@@ -90,7 +103,7 @@ public class Classificador {
         try
         {
             for(int i = 0; i < lnNumClasses; i++)
-                laProbabilities[i] = Math.log(this.paClasses[i].mxGetClassProbability());
+                laProbabilities[i] = Math.log(this.paClasses[i].getClassProbability());
                         
             //Read document
             loScan = new Scanner(file);
@@ -133,7 +146,7 @@ public class Classificador {
     
     public void setProbaClass(int tnClass, float tnProCla)
     {
-        this.paClasses[tnClass].setProbClass(tnProCla);
+        this.paClasses[tnClass].setClassProbability(tnProCla);
     }
     
     public int getNumDocs()

@@ -25,7 +25,10 @@ public class Interface extends javax.swing.JFrame {
 
     private String paDocuments [][];
     private String psDirectory;
+    private String paClasses[];
     private Classificador poClassificador;
+    private int paTestValidation[][][];
+    
     private int pnTotalDocuments = 0;
     /**
      * Creates new form Interface
@@ -55,6 +58,7 @@ public class Interface extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         spnFolds = new javax.swing.JSpinner();
         pgbProgress = new javax.swing.JProgressBar();
+        cmbViewResult = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Classificador de textos");
@@ -127,26 +131,37 @@ public class Interface extends javax.swing.JFrame {
             }
         });
 
+        cmbViewResult.setText("View Result");
+        cmbViewResult.setEnabled(false);
+        cmbViewResult.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                cmbViewResultMousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addComponent(pgbProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(cmbViewResult, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel1))
                         .addGap(18, 18, 18)
                         .addComponent(spnFolds, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmbTraining, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(pgbProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(75, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+                        .addComponent(cmbTraining, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,6 +175,8 @@ public class Interface extends javax.swing.JFrame {
                     .addComponent(cmbTraining))
                 .addGap(18, 18, 18)
                 .addComponent(pgbProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cmbViewResult)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -187,7 +204,7 @@ public class Interface extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addComponent(cmbExit)
                 .addContainerGap())
         );
@@ -213,8 +230,12 @@ public class Interface extends javax.swing.JFrame {
     private void pgbProgressStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pgbProgressStateChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_pgbProgressStateChanged
-  
-    
+
+    private void cmbViewResultMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbViewResultMousePressed
+        // TODO add your handling code here:
+        this.mxViewResult();
+    }//GEN-LAST:event_cmbViewResultMousePressed
+      
     public void mxFormatTable()
     {
         this.tblListFiles.setModel(new javax.swing.table.DefaultTableModel(
@@ -281,7 +302,7 @@ public class Interface extends javax.swing.JFrame {
     private void mxSelectFiles()
     {
         JFileChooser loFileChooser = new JFileChooser();
-        File laFolderSelected[], laListFiles[];
+        File laFolderSelected[];
         FilenameFilter loNameFilter;
         int result = 0;
         
@@ -333,28 +354,39 @@ public class Interface extends javax.swing.JFrame {
         {
             laClasses[i] = loModelList.getValueAt(i, 0).toString();
             this.pnTotalDocuments += Integer.parseInt(loModelList.getValueAt(i, 1).toString());
-        }
-        
-        this.poClassificador = new Classificador(laClasses);
-        
+        }        
+        this.paClasses = laClasses;
+        this.poClassificador = new Classificador(laClasses);       
         
         new Thread(){
             @Override
             public void run()
             {
-                mxLearnNaiveBayesText(0, 0);                
+                mxStart();
                 JOptionPane.showMessageDialog(null, "Training Complete!");
+                cmbViewResult.setEnabled(true);
             }                            
         }.start();        
     }
     
-    private void mxLearnNaiveBayesText(int tnBeginTeste, int tnEndTeste)
+    private void mxStart()
+    {
+        int lnNumFolds = (Integer)this.spnFolds.getValue();
+        this.paTestValidation = new int[lnNumFolds][][];
+        for(int i = 0; i < lnNumFolds; i++)
+        {
+            this.poClassificador.mxInitializeProperties();
+            
+            this.mxLearnNaiveBayesText(i);
+            this.mxClassifyNaiveBayes(i);
+        }
+    }
+    
+    private void mxLearnNaiveBayesText(int tnNumFold)
     {
         int lnNumDocs = 0, lnNumClasses = this.paDocuments.length;
         
-        this.mxCollectWords();
-        
-        System.out.println("Collect words complete!");
+        this.mxCollectWords(tnNumFold);
         
         for(int i = 0; i < lnNumClasses; i++)
         {
@@ -367,15 +399,23 @@ public class Interface extends javax.swing.JFrame {
         this.pgbProgress.setValue(100);
     }
     
-    private void mxCollectWords()
+    private void mxCollectWords(int tnNumFold)
     {
         int lnNumDoc = 0, lnNumClasses = this.paDocuments.length, lnCont = 0;
+        int lnNumFolds = (Integer)this.spnFolds.getValue();
         
         for(int i = 0; i < lnNumClasses; i++)
         {
             lnNumDoc = this.paDocuments[i].length;
+            
+            int lnGroups = lnNumDoc / lnNumFolds;
+            int lnBegin = lnGroups * tnNumFold;
+            
             for(int j = 0; j < lnNumDoc; j++)
             {
+                if(j >= lnBegin && j < lnBegin + lnGroups)
+                    continue;
+                
                 this.poClassificador.mxAddDocument(this.paDocuments[i][j], i);
                 int lnValue = (int)(95 * lnCont / this.pnTotalDocuments);
                 
@@ -386,46 +426,50 @@ public class Interface extends javax.swing.JFrame {
                 lnCont++;
             }            
         }
-    }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    }   
+    
+    private void mxClassifyNaiveBayes(int tnNumFold)
+    {
+        int lnNumDocs = 0, lnNumClasses = this.paDocuments.length;
+        int lnNumFolds = (Integer)this.spnFolds.getValue();
+        int lnClass = 0;
+        int laTasas[][] = new int[lnNumClasses][lnNumClasses];
+        
+        
+        for(int i = 0; i < lnNumClasses; i++)
+        {
+            lnNumDocs = this.paDocuments[i].length;
+            int lnGroups = lnNumDocs / lnNumFolds;
+            int lnBegin = lnGroups * tnNumFold;
+
+            for(int j = 0; j < lnGroups; j++)    
+            {
+                lnClass = this.poClassificador.mxClassificarNaiveBayesText(this.paDocuments[i][lnBegin + j]);
+                laTasas[i][lnClass]++;                
+            }            
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Interface().setVisible(true);
+        System.out.println("Fold: " + tnNumFold);
+        for(int i = 0; i < lnNumClasses; i++)
+        {
+            for(int j = 0; j < lnNumClasses; j++)
+            {
+                System.out.print(laTasas[i][j] + "\t");
             }
-        });
+            System.out.println("");
+        }
+        this.paTestValidation[tnNumFold] = laTasas;
     }
 
+    private void mxViewResult()
+    {
+        Results loResults = new Results(this, rootPaneCheckingEnabled, this.paTestValidation, this.paClasses);
+        loResults.setVisible(true);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmbExit;
     private javax.swing.JButton cmbSelFil;
     private javax.swing.JButton cmbTraining;
+    private javax.swing.JButton cmbViewResult;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
