@@ -65,8 +65,6 @@ public class Results extends javax.swing.JDialog {
         txcMedidaF = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         cbbClasses = new javax.swing.JComboBox<>();
-        jLabel10 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
         cmbReturn = new javax.swing.JButton();
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -200,18 +198,13 @@ public class Results extends javax.swing.JDialog {
         txcMedidaF.setEditable(false);
         txcMedidaF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-        jLabel8.setText("Principal Class");
+        jLabel8.setText("Class of Interest:");
 
         cbbClasses.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbbClassesItemStateChanged(evt);
             }
         });
-
-        jLabel10.setText("Std. Dev.:");
-
-        jTextField6.setEditable(false);
-        jTextField6.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -227,7 +220,6 @@ public class Results extends javax.swing.JDialog {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel10)
                     .addComponent(jLabel3)
                     .addComponent(jLabel6)
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -237,9 +229,8 @@ public class Results extends javax.swing.JDialog {
                     .addComponent(txcPrecis, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txcTVP, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txcTFP, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txcMedidaF, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                    .addComponent(txcMedidaF, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -265,13 +256,9 @@ public class Results extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(txcMedidaF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10)))
+                            .addComponent(txcMedidaF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         cmbReturn.setText("Return");
@@ -287,15 +274,17 @@ public class Results extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cmbReturn)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(cmbReturn))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -303,15 +292,15 @@ public class Results extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
                 .addComponent(cmbReturn)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -415,33 +404,8 @@ public class Results extends javax.swing.JDialog {
             }
             ((DefaultTableModel)this.tblConfusionSingle.getModel()).addRow(laDatos);
         }
-    }
-    
-    private void mxCargarConfusionTotal()
-    {
-        Object laDatos[];
-        int lnNumFolds = this.paResult.length;
-        int lnNumClasses = this.paResult[0].length;
-        int laResultMedio [][] = new int [lnNumClasses][lnNumClasses];
-        
-        for(int i = 0; i < lnNumFolds; i++)
-            for(int j = 0; j < lnNumClasses; j++)
-                for(int k = 0; k < lnNumClasses; k++)
-                    laResultMedio[j][k] += this.paResult[i][j][k];    
-        
-        for(int i = 0; i < lnNumClasses; i++)
-        {
-            laDatos = new Object[lnNumClasses + 1];
-            laDatos[0] = this.paClasses[i];
-            
-            for(int j = 0; j < lnNumClasses; j++)
-            {
-                laDatos[j+1] = (Integer)(laResultMedio[i][j] / lnNumFolds);                
-            }
-            ((DefaultTableModel)this.tblConfusion.getModel()).addRow(laDatos);
-        }        
-    }
-    
+    }    
+   
     private void mxCalcularConfusionTotal(int tnClasse)
     {
         DecimalFormat loDecimalFormat = new DecimalFormat("0.000");
@@ -454,7 +418,7 @@ public class Results extends javax.swing.JDialog {
         laColumnas[0] = "Class";
         laColumnas[1] = this.paClasses[tnClasse];
         laColumnas[2] = "Other";
-        int lnVP = 0, lnFP = 0, lnVN = 0, lnFN = 0;
+        double lnVP = 0, lnFP = 0, lnVN = 0, lnFN = 0;
         
         
         for(int i = 0; i < lnNumFolds; i++)
@@ -477,7 +441,7 @@ public class Results extends javax.swing.JDialog {
         
         this.tblConfusion.setModel(new javax.swing.table.DefaultTableModel( new Object [][] {}, laColumnas)
         {
-            Class[] types = new Class[] {java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class};
+            Class[] types = new Class[] {java.lang.String.class, java.lang.Double.class, java.lang.Double.class};
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
@@ -485,32 +449,30 @@ public class Results extends javax.swing.JDialog {
         this.tblConfusion.setDefaultRenderer(String.class, formato); 
         this.tblConfusion.setDefaultRenderer(Integer.class, formato);
         
-        lnVP = laResultMedio[0][0]; /// lnNumFolds;
-        lnFP = laResultMedio[0][1]; /// lnNumFolds;
-        lnFN = laResultMedio[1][0]; /// lnNumFolds;
-        lnVN = laResultMedio[1][1]; /// lnNumFolds;
+        lnVP = (double)laResultMedio[0][0] / (double)lnNumFolds;
+        lnFP = (double)laResultMedio[0][1] / (double)lnNumFolds;
+        lnFN = (double)laResultMedio[1][0] / (double)lnNumFolds;
+        lnVN = (double)laResultMedio[1][1] / (double)lnNumFolds;
         
         //Set values confusion matrix mean
-        ((DefaultTableModel)this.tblConfusion.getModel()).addRow(new Object[] {this.paClasses[tnClasse], (Integer)(lnVP), (Integer)lnFP});
-        ((DefaultTableModel)this.tblConfusion.getModel()).addRow(new Object[] {"Other", (Integer)(lnFN), (Integer)lnVN});   
+        ((DefaultTableModel)this.tblConfusion.getModel()).addRow(new Object[] {this.paClasses[tnClasse], (Double)(lnVP), (Double)lnFP});
+        ((DefaultTableModel)this.tblConfusion.getModel()).addRow(new Object[] {"Other", (Double)(lnFN), (Double)lnVN});   
         
-        double lnPrecis = ((double)lnVP / (double)(lnVP + lnFP));
-        double lnTVP = ((double)lnVP / (double)(lnVP + lnFN));
-        double lnTFP = ((double)lnFP / (double)(lnFP + lnVN));
+        double lnPrecis = (lnVP / (lnVP + lnFP));
+        double lnTVP = (lnVP / (lnVP + lnFN));
+        double lnTFP = (lnFP / (lnFP + lnVN));
         double lnMedidaF = (2 * lnTVP * lnPrecis) / (lnTVP + lnPrecis);
         
         this.txcPrecis.setText( "" + loDecimalFormat.format(lnPrecis));
         this.txcTVP.setText( "" + loDecimalFormat.format(lnTVP));
         this.txcTFP.setText( "" + loDecimalFormat.format(lnTFP));
-        this.txcMedidaF.setText( "" + loDecimalFormat.format(lnMedidaF));
-        
+        this.txcMedidaF.setText( "" + loDecimalFormat.format(lnMedidaF));        
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbbClasses;
     private javax.swing.JButton cmbReturn;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -527,7 +489,6 @@ public class Results extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JTable tblConfusion;
     private javax.swing.JTable tblConfusionSingle;
     private javax.swing.JTable tblFols;

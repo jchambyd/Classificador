@@ -7,12 +7,10 @@ package Interface;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.math.BigDecimal;
 import javax.swing.BorderFactory;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 public class FormatTable implements TableCellRenderer
@@ -36,7 +34,7 @@ public class FormatTable implements TableCellRenderer
         if(value instanceof Double)
         {
             Double valor = (Double)value;
-            campoTexto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00")))); 
+            campoTexto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("0.00")))); 
             campoTexto.setHorizontalAlignment(SwingConstants.TRAILING); 
             campoTexto.setValue(valor);
         }       
