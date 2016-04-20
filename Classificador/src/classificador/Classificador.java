@@ -111,7 +111,7 @@ public class Classificador {
             {
                 lsLine = loScan.nextLine();
                 loToken = new StringTokenizer(lsLine, " ,;.(){}[]-!|¡?¿");
-                while(loToken.hasMoreTokens()) 
+                while(loToken.hasMoreTokens())
                 {
                     lsWord = loToken.nextToken();
                     if(this.poVocabulary.containsKey(lsWord))

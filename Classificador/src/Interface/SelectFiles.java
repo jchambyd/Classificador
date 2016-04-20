@@ -55,6 +55,7 @@ public class SelectFiles extends javax.swing.JDialog {
         cmbReturn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Select Documents");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
