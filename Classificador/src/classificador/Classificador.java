@@ -5,12 +5,8 @@
  */
 package classificador;
 import Interface.Interface;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Scanner;
-import java.util.StringTokenizer;
 
 /**
  *
@@ -51,80 +47,45 @@ public class Classificador {
         }
     }
     
-    public void mxAddDocument(String tsPath, int tnClasse)
+    public void mxAddDocument(Document toDocument, int tnClasse)
     {
-        File file = new File(tsPath);
-        Scanner loScan;
-        String lsLine, lsWord;
-        StringTokenizer loToken;
-        
+        int lnNumWords = toDocument.mxGetNumWords();
+        String lsWord = "";
         this.paClasses[tnClasse].mxAddDocument();
-        try
+                   
+        for(int i = 0; i < lnNumWords; i++)
         {
-            //Read document
-            loScan = new Scanner(file);
-            if (loScan.hasNextLine())
-            {
-                lsLine = loScan.nextLine();
-                loToken = new StringTokenizer(lsLine, " ,;.(){}[]-!|¡?¿");
-                while(loToken.hasMoreTokens()) 
-                {
-                    lsWord = loToken.nextToken();
-                    
-                    //Add word to classificador
-                    this.pnNumWords++;
-                    
-                    if(this.poVocabulary.containsKey(lsWord))
-                        this.poVocabulary.put(lsWord, this.poVocabulary.get(lsWord)+1);
-                    else
-                        this.poVocabulary.put(lsWord, 1);
-                    
-                    //Add word to class
-                    this.paClasses[tnClasse].mxAddWord(lsWord);
-                }
-            }
-        }
-        catch (FileNotFoundException e) 
-        {
-            e.printStackTrace();
-        }
+            lsWord = toDocument.paWords.get(i);
+            this.pnNumWords++;            
+            //Verify if the word is in our vocabulary
+            if(this.poVocabulary.containsKey(lsWord))
+                this.poVocabulary.put(lsWord, this.poVocabulary.get(lsWord)+1);
+            else
+                this.poVocabulary.put(lsWord, 1);
+            //Add word to class
+            this.paClasses[tnClasse].mxAddWord(lsWord);
+        }       
         this.pnNumDocs++;
     }
     
-    public int mxClassificarNaiveBayesText(String tsPath)
+    public int mxClassificarNaiveBayesText(Document toDocument)
     {
-        File file = new File(tsPath);
-        Scanner loScan;
-        String lsLine, lsWord;
-        StringTokenizer loToken;
+        int lnNumWords = toDocument.mxGetNumWords();
+        String lsWord;
         int lnNumClasses = this.paClasses.length;
         double laProbabilities[] = new double[lnNumClasses];
         
-        try
+        for(int i = 0; i < lnNumClasses; i++)
+            laProbabilities[i] = Math.log(this.paClasses[i].getClassProbability());
+
+        for(int i = 0; i < lnNumWords; i++)
         {
-            for(int i = 0; i < lnNumClasses; i++)
-                laProbabilities[i] = Math.log(this.paClasses[i].getClassProbability());
-                        
-            //Read document
-            loScan = new Scanner(file);
-            if (loScan.hasNextLine()) 
+            lsWord = toDocument.paWords.get(i);
+            if(this.poVocabulary.containsKey(lsWord))
             {
-                lsLine = loScan.nextLine();
-                loToken = new StringTokenizer(lsLine, " ,;.(){}[]-!|¡?¿");
-                while(loToken.hasMoreTokens())
-                {
-                    lsWord = loToken.nextToken();
-                    if(this.poVocabulary.containsKey(lsWord))
-                    {
-                        for(int i = 0; i < lnNumClasses; i++)
-                            laProbabilities[i] += Math.log(this.paClasses[i].mxGetProbability(lsWord));                        
-                    }
-                }
+                for(int j = 0; j < lnNumClasses; j++)
+                    laProbabilities[j] += Math.log(this.paClasses[j].mxGetProbability(lsWord));                        
             }
-        }
-        catch (FileNotFoundException e) 
-        {
-            e.printStackTrace();
         }
         return this.mxMaxValue(laProbabilities);
     }

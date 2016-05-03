@@ -27,6 +27,7 @@ import javax.swing.table.TableCellRenderer;
 public class Interface extends javax.swing.JFrame {
 
     private String paDocuments [][];
+    private Document paLoadDocuments [][];
     private String psDirectory;
     private String paClasses[];
     private Classificador poClassificador;
@@ -249,7 +250,7 @@ public class Interface extends javax.swing.JFrame {
         this.mxViewResult();
     }//GEN-LAST:event_cmbViewResultMousePressed
       
-    public void mxFormatTable()
+    private void mxFormatTable()
     {
         FormatTable formato = new FormatTable();
         this.tblListFiles.setModel(new javax.swing.table.DefaultTableModel(
@@ -263,6 +264,7 @@ public class Interface extends javax.swing.JFrame {
             java.lang.String.class, java.lang.Integer.class, JButton.class
             };
 
+            @Override
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
@@ -323,7 +325,7 @@ public class Interface extends javax.swing.JFrame {
         JFileChooser loFileChooser = new JFileChooser();
         File laFolderSelected[];
         FilenameFilter loNameFilter;
-        int result = 0, lnCont = 0;
+        int result, lnCont = 0;
         
         loFileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         loFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -388,12 +390,13 @@ public class Interface extends javax.swing.JFrame {
         
         laClasses = new String[lnNumFiles];
         
-        //Load classes
+        //Count number documents
         for(int i = 0; i < lnNumFiles; i++)
         {
             laClasses[i] = loModelList.getValueAt(i, 0).toString();
             this.pnTotalDocuments += Integer.parseInt(loModelList.getValueAt(i, 1).toString());
         }        
+        
         this.paClasses = laClasses;
         this.poClassificador = new Classificador(laClasses);       
         
@@ -413,6 +416,9 @@ public class Interface extends javax.swing.JFrame {
     {
         int lnNumFolds = (Integer)this.spnFolds.getValue();
         this.paTestValidation = new int[lnNumFolds][][];
+        
+        this.mxLoadDocuments();
+        
         for(int i = 0; i < lnNumFolds; i++)
         {
             this.poClassificador.mxInitializeProperties();
@@ -424,9 +430,44 @@ public class Interface extends javax.swing.JFrame {
         }
     }
     
+    private void mxLoadDocuments()
+    {
+        int lnNumGroups = this.paDocuments.length, lnNumDoc, lnCont = 0;
+        this.paLoadDocuments = new Document[lnNumGroups][];
+        Document loDocumentTmp;
+        
+        for(int i = 0 ; i < lnNumGroups; i++)
+        {
+            lnNumDoc = this.paDocuments[i].length;
+            this.paLoadDocuments[i] = new Document[lnNumDoc];    
+
+            for(int j = 0; j < lnNumDoc; j++)
+            {
+                loDocumentTmp = new Document(this.paDocuments[i][j]);
+                this.paLoadDocuments[i][j] = loDocumentTmp;
+
+                int lnValue = (int)(100 * lnCont / this.pnTotalDocuments);
+                
+                this.pgbProgress.setValue(lnValue);
+                
+                if(lnValue % 3 == 0)
+                {                    
+                    this.pgbProgress.setValue(lnValue);
+                    this.lblProcess.setText("Loading docs " + lnCont + " of " + this.pnTotalDocuments + " ...");                    
+                }
+                lnCont++;
+            }
+        }
+        this.pgbProgress.setValue(100);
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////   BAYES NAIVE   ///////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    
     private void mxLearnNaiveBayesText(int tnNumFold)
     {
-        int lnNumDocs = 0, lnNumClasses = this.paDocuments.length;
+        int lnNumDocs, lnNumClasses = this.paDocuments.length;
         
         this.mxCollectWords(tnNumFold);
         
@@ -443,12 +484,12 @@ public class Interface extends javax.swing.JFrame {
     
     private void mxCollectWords(int tnNumFold)
     {
-        int lnNumDoc = 0, lnNumClasses = this.paDocuments.length, lnCont = 0;
+        int lnNumDoc, lnNumClasses = this.paLoadDocuments.length, lnCont = 0;
         int lnNumFolds = (Integer)this.spnFolds.getValue();
         
         for(int i = 0; i < lnNumClasses; i++)
         {
-            lnNumDoc = this.paDocuments[i].length;
+            lnNumDoc = this.paLoadDocuments[i].length;
             
             int lnGroups = lnNumDoc / lnNumFolds;
             int lnBegin = lnGroups * tnNumFold;
@@ -458,35 +499,34 @@ public class Interface extends javax.swing.JFrame {
                 if(j >= lnBegin && j < lnBegin + lnGroups)
                     continue;
                 
-                this.poClassificador.mxAddDocument(this.paDocuments[i][j], i);
-                int lnValue = (int)(95 * lnCont / this.pnTotalDocuments);
+                this.poClassificador.mxAddDocument(this.paLoadDocuments[i][j], i);
+                int lnValue = (int)(100 * lnCont / this.pnTotalDocuments);
                 
                 if(lnValue % 3 == 0)
                 {                    
                     this.pgbProgress.setValue(lnValue);
                 }
                 lnCont++;
-            }            
+            }
         }
     }   
     
     private void mxClassifyNaiveBayes(int tnNumFold)
     {
-        int lnNumDocs = 0, lnNumClasses = this.paDocuments.length;
+        int lnNumDocs, lnNumClasses = this.paLoadDocuments.length, lnClass;
         int lnNumFolds = (Integer)this.spnFolds.getValue();
-        int lnClass = 0;
         int laTasas[][] = new int[lnNumClasses][lnNumClasses];
         
         
         for(int i = 0; i < lnNumClasses; i++)
         {
-            lnNumDocs = this.paDocuments[i].length;
+            lnNumDocs = this.paLoadDocuments[i].length;
             int lnGroups = lnNumDocs / lnNumFolds;
             int lnBegin = lnGroups * tnNumFold;
 
             for(int j = 0; j < lnGroups; j++)    
             {
-                lnClass = this.poClassificador.mxClassificarNaiveBayesText(this.paDocuments[i][lnBegin + j]);
+                lnClass = this.poClassificador.mxClassificarNaiveBayesText(this.paLoadDocuments[i][lnBegin + j]);
                 laTasas[i][lnClass]++;                
             }            
         }       
@@ -498,6 +538,7 @@ public class Interface extends javax.swing.JFrame {
         Results loResults = new Results(this, true, this.paTestValidation, this.paClasses);
         loResults.setVisible(true);
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmbExit;
     private javax.swing.JButton cmbSelFil;
@@ -516,6 +557,7 @@ public class Interface extends javax.swing.JFrame {
 }
 class FileComparator implements Comparator<File> 
 {
+    @Override
     public int compare(File tsStrOne, File tsStrTwo) 
     {        
 	return tsStrTwo.getName().compareTo(tsStrOne.getName());
