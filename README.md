@@ -1,4 +1,4 @@
-# Naive Bayer Classifier for text classification
+# Naive Bayes Classifier for text classification
 
 This code implements in Java a simple naive bayes classfier for documents.
 
